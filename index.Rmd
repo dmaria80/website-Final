@@ -24,15 +24,17 @@ Red Sox | American
 <img src="messi.jpg" width="300"/>
 
 
-```{r Warning=FALSE}
+```{r message=FALSE,Warning=FALSE}
 library(Lahman)
 library(sqldf)
 ```
 
 
+##Filtering Rows and Columns
+
 Suppose we want to see the homerun totals for the 1927 Yankees. We could write:
 
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-"select playerID,teamID,yearID,HR from Batting
 where teamID='NYA' and yearID=1927"
 
@@ -42,7 +44,7 @@ sqldf(query)
 
 Suppose we want to find all insances of Phillies in the 1970s hitting more than 30 homeruns:
 
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-"select playerID,teamID,yearID,HR from Batting
 where teamID='PHI' and HR>30 and yearID>=1970 and yearID<1980"
 
@@ -52,7 +54,7 @@ sqldf(query)
 
 Finding all the Yankees that hit greater than 40 homeruns we could write the following code:
 
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-"SELECT playerID,teamID,yearID,HR FROM Batting
 WHERE teamID='NYA' and HR>=40"
 
@@ -61,7 +63,7 @@ sqldf(query)
 
 Suppose we want to find all the instances where a player had more than 40 homeruns but less than 60 strikeouts.
 
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-"select playerID,teamID,yearID,HR,SO from Batting
 where HR>40 and SO<60"
 
@@ -69,9 +71,11 @@ sqldf(query)
 ```
 
 
-With SQL we can also order the rows in the output. For example; suppose we want to see every instance of a playr hitting more than 50 HR but youd like the player with the most HR to be at the top. Do the following:
+##Order By
 
-```{r}
+With SQL we can also order the rows in the output. For example; suppose we want to see every instance of a player hitting more than 50 HR but youd like the player with the most HR to be at the top. Do the following:
+
+```{r message=FALSE,Warning=FALSE}
 query<-"select playerID,yearID,teamID,HR from Batting 
 where HR>50
 order by HR desc"
@@ -79,11 +83,11 @@ order by HR desc"
 sqldf(query)
 ```
 
-
+##Aggregation
 
 With SQL we can squash chunks of data together to get things such as sumations,averages,maximuns, and minimums. For example; Suppose we want to find what players have the highest average per season Hoomerun totals, Listing only those with averages greater than 30.
 
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-" select playerID, avg(HR) from Batting
 group by playerID
 having avg(HR)>30
@@ -92,9 +96,11 @@ order by avg(HR) desc"
 sqldf(query)
 ```
 
+##Joins
+
 Find the first and last names along with TeamID, YearID, HR, Player should be babe ruth:
 
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-"SELECT namefirst, namelast, teamID, YearID
 FROM Batting INNER JOIN Master
 ON Batting.playerID=Master.playerID
@@ -105,7 +111,7 @@ sqldf(query)
 
 Find all instances of players hitting more than 50 HR:
 
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-"select namefirst,namelast,teamID,YearID, HR
 From Batting INNER JOIN Master
 On Batting.playerID=Master.playerID
@@ -116,7 +122,7 @@ sqldf(query)
 ```
 
 Babe Ruth with player ID, Team name, year, and HR
-```{r}
+```{r message=FALSE,Warning=FALSE}
 query<-"SELECT playerID,name,Batting.yearID,Batting.HR
 FROM Batting INNER JOIN Teams
 On Batting.TeamID=teams.teamID and Batting.yearID=Teams.yearID
